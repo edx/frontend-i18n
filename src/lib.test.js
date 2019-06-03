@@ -103,63 +103,46 @@ describe('lib', () => {
   });
 
   describe('getLocale', () => {
-    it('should throw an error if called before configure has been called with messages', () => {
-      // For testing purposes, sets messages back to null, emulating a situation where
-      // configure wasn't called.
+    beforeEach(() => {
       configure(
         {
           ENVIRONMENT: 'production',
           LANGUAGE_PREFERENCE_COOKIE_NAME: 'yum',
         },
-        null,
+        {
+          'es-419': {},
+          de: {},
+          'en-us': {},
+        },
       );
-      expect(() => {
-        getLocale();
-      }).toThrowError('getLocale called before configuring i18n. Call configure with messages first.');
     });
 
-    describe('when configured', () => {
-      beforeEach(() => {
-        configure(
-          {
-            ENVIRONMENT: 'production',
-            LANGUAGE_PREFERENCE_COOKIE_NAME: 'yum',
-          },
-          {
-            'es-419': {},
-            de: {},
-            'en-us': {},
-          },
-        );
-      });
+    it('should return a supported locale as supplied', () => {
+      expect(getLocale('es-419')).toEqual('es-419');
+      expect(getLocale('en-us')).toEqual('en-us');
+    });
 
-      it('should return a supported locale as supplied', () => {
-        expect(getLocale('es-419')).toEqual('es-419');
-        expect(getLocale('en-us')).toEqual('en-us');
-      });
+    it('should return the supported primary language tag of a not-quite-supported locale', () => {
+      expect(getLocale('de-de')).toEqual('de');
+    });
 
-      it('should return the supported primary language tag of a not-quite-supported locale', () => {
-        expect(getLocale('de-de')).toEqual('de');
-      });
+    it('should return en if the locale is not supported at all', () => {
+      expect(getLocale('oh-no')).toEqual('en');
+    });
 
-      it('should return en if the locale is not supported at all', () => {
-        expect(getLocale('oh-no')).toEqual('en');
-      });
+    it('should look up a locale in the language preference cookie if one was not supplied', () => {
+      getCookies().get = jest.fn(() => 'es-419');
+      expect(getLocale()).toEqual('es-419');
 
-      it('should look up a locale in the language preference cookie if one was not supplied', () => {
-        getCookies().get = jest.fn(() => 'es-419');
-        expect(getLocale()).toEqual('es-419');
+      getCookies().get = jest.fn(() => 'pl');
+      expect(getLocale()).toEqual('en');
 
-        getCookies().get = jest.fn(() => 'pl');
-        expect(getLocale()).toEqual('en');
-
-        getCookies().get = jest.fn(() => 'de-bah');
-        expect(getLocale()).toEqual('de');
-      });
-      it('should fallback to the browser locale if the cookie does not exist', () => {
-        getCookies().get = jest.fn(() => null);
-        expect(getLocale()).toEqual(global.navigator.language.toLowerCase());
-      });
+      getCookies().get = jest.fn(() => 'de-bah');
+      expect(getLocale()).toEqual('de');
+    });
+    it('should fallback to the browser locale if the cookie does not exist', () => {
+      getCookies().get = jest.fn(() => null);
+      expect(getLocale()).toEqual(global.navigator.language.toLowerCase());
     });
   });
 
@@ -218,19 +201,6 @@ describe('lib', () => {
     let setAttribute;
     let removeAttribute;
 
-    beforeAll(() => {
-      // Allow us to modify stylesheets in these tests.  The styleSheets object cannot normally
-      // be set.
-      Object.defineProperty(global.document, 'styleSheets', {
-        value: [
-          { disabled: false, href: null }, // Should be ignored because it has no href
-          { disabled: false, href: 'real href' },
-          { disabled: false, href: 'real href' },
-          { disabled: false, href: null }, // Should be ignored because it has no href
-        ],
-      });
-    });
-
     beforeEach(() => {
       setAttribute = jest.fn();
       removeAttribute = jest.fn();
@@ -241,11 +211,6 @@ describe('lib', () => {
           removeAttribute,
         },
       ]);
-
-      // We use the same two stylesheets for each test, so just set them back to their default
-      // disabled-ness.
-      global.document.styleSheets[0].disabled = false;
-      global.document.styleSheets[1].disabled = false;
     });
 
     it('should do the right thing for non-RTL languages', () => {
@@ -261,10 +226,7 @@ describe('lib', () => {
       );
 
       handleRtl();
-      expect(setAttribute).not.toHaveBeenCalled();
-      expect(removeAttribute).toHaveBeenCalledWith('dir');
-      expect(global.document.styleSheets[1].disabled).toBe(false);
-      expect(global.document.styleSheets[2].disabled).toBe(true);
+      expect(setAttribute).toHaveBeenCalledWith('dir', 'ltr');
     });
 
     it('should do the right thing for RTL languages', () => {
@@ -281,9 +243,6 @@ describe('lib', () => {
 
       handleRtl();
       expect(setAttribute).toHaveBeenCalledWith('dir', 'rtl');
-      expect(removeAttribute).not.toHaveBeenCalled();
-      expect(global.document.styleSheets[1].disabled).toBe(true);
-      expect(global.document.styleSheets[2].disabled).toBe(false);
     });
   });
 });
