@@ -190,25 +190,13 @@ describe('lib', () => {
   });
 
   describe('handleRtl', () => {
-    /* WARNING:
-     *
-     * These handleRtl tests may pollute the document used by other tests in this file.
-     * Right now it doesn't matter, but if WEIRD STUFF starts happening, we may need to figure
-     * out how to properly mock global.document using jest and jsdom - I couldn't figure out how.
-     * Some of the properties are read-only, so this setup is a bit of a hack.
-     */
-
     let setAttribute;
-    let removeAttribute;
-
     beforeEach(() => {
       setAttribute = jest.fn();
-      removeAttribute = jest.fn();
 
       global.document.getElementsByTagName = jest.fn(() => [
         {
           setAttribute,
-          removeAttribute,
         },
       ]);
     });
