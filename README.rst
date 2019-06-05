@@ -62,9 +62,9 @@ Exports
 
 Configures the i18n library with messages for your application.
 
-The first is the application configuration object.
+The first argument is the application configuration object.
 
-The second parameter is an object containing messages for each supported locale, indexed by locale name.
+The second argument is an object containing messages for each supported locale, indexed by locale name.
 
 Example of second parameter::
 
@@ -79,7 +79,7 @@ Example of second parameter::
   }
 
 Logs a warning if it detects a locale it doesn't expect (as defined by the supportedLocales list
-above), or if an expected locale is not provided.
+in lib.js), or if an expected locale is not provided.
 
 
 **getPrimaryLanguageSubtag**
@@ -88,24 +88,22 @@ Some of our dependencies function on primary language subtags, rather than full 
 
 **getLocale([locale])**
 
-Get the locale from the cookie or, failing that, the browser setting.
-Gracefully fall back to a more general primary language subtag or to English (en) if we don't support that language. Throws An error if i18n has not yet been configured.
+Gets the locale from the cookie or, failing that, the browser setting.
+Falls back to a more general primary language subtag, or, if the more general language isn't one we support, to English (en). Throws an error if i18n has not yet been configured.
 
 locale (Optional): If a locale is provided, returns the closest supported locale.
 
 **getMessages([locale])**
 
-Returns messages for the provided locale, or the user's preferred locale if no argument is provided.
+Returns messages for the provided locale, or for the user's preferred locale if no argument is provided.
 
 **isRtl()**
 
 Determines if the provided locale is a right-to-left language.
 
-
 **handleRtl()**
 
-Handles applying the RTL stylesheet and "dir=rtl" attribute to the html tag if the current locale is a RTL language.
-
+If the current locale is an RTL language, applies the RTL stylesheet and adds a "dir=rtl" attribute to the html tag.
 
 Passthrough components from `react-intl <https://github.com/formatjs/react-intl/wiki/Components>`_.
 
@@ -117,7 +115,7 @@ Passthrough components from `react-intl <https://github.com/formatjs/react-intl/
 - **FormattedRelative**
 - **FormattedTime**
 - **defineMessages**
-- **injectIntl** (shimmed by this library to throw errors instead of crash when non existent message ids are supplied)
+- **injectIntl** (shimmed by this library to throw errors instead of crashing when it gets a nonexistent message id)
 - **IntlProvider**
 - **intlShape**
 
@@ -141,7 +139,7 @@ The reducer for locale actions.
 
 **localeSelector**
 
-A selector that retrieves the locale when given the redux state.
+A selector that returns the locale when given the redux state.
 
 
 Localized country lists:
@@ -156,18 +154,18 @@ Provides a list of countries represented as objects of the following shape::
     name // The localized name of the country
   }
 
-The list is sorted alphabetically in the current locale. This is useful for select dropdowns primarily.
+The list should be sorted alphabetically in the current locale (but see `ARCH-878 <https://openedx.atlassian.net/browse/ARCH-878>`_). This is useful for populating a dropdown.
 
 **getCountryMessages(locale)**
 
-Provides a lookup table of country IDs to country names for the current locale.
+Provides a lookup table of country IDs to country names in the current locale.
 
 Localized language lists:
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 **getLanguageList(locale)**
 
-Provides a lookup table of language IDs to language names for the current locale.
+Provides a lookup table of language IDs to language names in the current locale.
 
 **getLanguageMessages(locale)**
 
@@ -178,8 +176,7 @@ Provides a list of languages represented as objects of the following shape::
     name // The localized name of the language
   }
 
-The list is sorted alphabetically in the current locale.
-This is useful for select dropdowns primarily.
+The list should be sorted alphabetically in the current locale (but see `ARCH-878 <https://openedx.atlassian.net/browse/ARCH-878>`_). This is useful for populating a dropdown.
 
 
 .. |Build Status| image:: https://api.travis-ci.org/edx/frontend-i18n.svg?branch=master
