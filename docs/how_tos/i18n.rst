@@ -165,7 +165,9 @@ Create your pipeline job on Jenkins
 
    * In the command lines that run the job, put in your repo name and the GitHub team name that you'd like notifications sent to.
 
-   * The existing jobs push translation strings to Transifex daily at 8PM UTC, and pull completed translations once a week, on Sunday at 8PM UTC. (Note that the Jenkins machine runs in UTC.) You can pick your own schedule on the ``cron`` line. It's best to move your new job off of 8PM UTC, so we don't have to worry about the Transifex API rate limit described above.
+   * The existing jobs push translation strings to Transifex daily, and pull completed translations once a week, on Sunday. You can pick your own schedule on the ``cron`` line. It's best to move your new job off of 8PM UTC, so we don't have to worry about the Transifex API rate limit described above.
+
+     * Note that the Jenkins machine uses UTC.
 
 #. Open a pull request with your change, then `open a devops ticket <https://openedx.atlassian.net/servicedesk/customer/portal/3>`_ requesting them to review your pull request and rerun the seed job. Only devops can merge pull requests in this repo.
 
