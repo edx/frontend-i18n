@@ -98,7 +98,7 @@ The pipeline jobs live in the ``ecommerce-scripts`` repo, but you don't have to 
 
    * Modify the ``transifex_resource`` variable with your own Transifex resource name.
 
-#. The job to push strings to Transifex will call ``make push_translations`` in your repo. This target should do everything necessary to extract your strings, concat them into one file, and put them in ``src/i18n/transifex_input.json``.
+#. The job to push strings to Transifex will call ``make push_translations`` in your repo. This target should do everything necessary to extract your strings, concat them into one file, and put them in ``src/i18n/transifex_input.json``. If you don't have any special requirements, you can just use the default target that is included ``from frontend-i18n``.
 
    #. Extraction: We will be using a Babel plugin to find all the strings inside a ``FormattedMessage`` component or inside a call to ``defineMessages``.
 
@@ -125,11 +125,9 @@ The pipeline jobs live in the ``ecommerce-scripts`` repo, but you don't have to 
 
       * Confirm that running ``make i18n.extract`` creates a lot of ``.json`` files in ``your-repo/temp/babel-plugin-react-intl/`` .
 
-      * Add ``temp/babel-plugin-react-intl`` and ``src/i18n/transifex_input.json`` to your ``.gitignore``.
+      * Add ``temp`` and ``src/i18n/transifex_input.json`` to your ``.gitignore``.
 
    #. Concatenation: All those ``.json`` files need to become one file.
-
-      * Copy `i18n-concat.js <https://github.com/edx/frontend-app-account/blob/master/src/i18n/i18n-concat.js>`__ into ``src/i18n``.
 
       * Confirm that running ``make i18n.concat`` creates ``src/i18n/transifex_input.json``, which should be a file of message id / English pairs.
 
@@ -143,7 +141,11 @@ The pipeline jobs live in the ``ecommerce-scripts`` repo, but you don't have to 
 
       * You can't test this one without Transifex credentials, so at this point it's probably easiest to just make your pipeline job and run that.
 
-#. The job to pull translations out of Transifex and commit them to your repo will call ``make pull_translations``. You'll need to specify which languages you want to pull in the ``transifex_langs`` variable of your Makefile, and the user ``edx_transifex_bot`` will need to have permissions to merge an unreviewed pull request into your repo. This means your repo must either allow merging unreviewed pull requests for everyone, or ``edx_transifex_bot`` needs to be an administrator.
+#. The job to pull translations out of Transifex and commit them to your repo will call ``make pull_translations``.
+
+      * If the languages you want to pull down differ from the default set listed in the ``frontend-i18n`` Makefile, you can set the ``transifex_langs`` variable in your local Makefile, after the include.
+
+      * The user ``edx_transifex_bot`` will need to have permissions to merge an unreviewed pull request into your repo. This means your repo must either allow merging unreviewed pull requests for everyone, or ``edx_transifex_bot`` needs to be an administrator.
 
 *******************************************
 Create empty translation files in your repo
