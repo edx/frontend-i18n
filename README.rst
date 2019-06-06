@@ -3,7 +3,7 @@ frontend-i18n
 
 |Build Status| |Coveralls| |npm_version| |npm_downloads| |license| |semantic-release|
 
-frontend-i18n contains a shared interface for internationalizing and localizing frontend code.  For detailed soup-to-nuts instructions on internationalizing your React app, see the _HOWTO .
+frontend-i18n contains a shared interface for internationalizing and localizing frontend code. For detailed soup-to-nuts instructions on internationalizing your React app, see the _HOWTO .
 
 .. _HOWTO: https://github.com/edx/frontend-i18n/blob/master/docs/how_tos/i18n.rst
 
@@ -19,8 +19,7 @@ To install frontend-i18n into your project::
 Configuration
 -------------
 
-The frontend-i18n library needs to be configured on application initialization.  The configure() function
-takes two arguments, a configuration object and a messages object.
+The frontend-i18n library needs to be configured on application initialization. The configure() function takes two arguments, a configuration object and a messages object.
 
 Example of messages object::
 
@@ -78,17 +77,17 @@ Example of second parameter::
     ...
   }
 
-Logs a warning if it detects a locale it doesn't expect (as defined by the supportedLocales list
-in lib.js), or if an expected locale is not provided.
+Logs a warning if it detects a locale it doesn't expect (as defined by the supportedLocales list in lib.js), or if an expected locale is not provided.
 
 
 **getPrimaryLanguageSubtag**
 
-Some of our dependencies function on primary language subtags, rather than full locales. This function strips a locale down to that first subtag.  Depending on the code, this may be 2 or more characters.
+Some of our dependencies function on primary language subtags, rather than full locales. This function strips a locale down to that first subtag. Depending on the code, this may be 2 or more characters.
 
 **getLocale([locale])**
 
 Gets the locale from the cookie or, failing that, the browser setting.
+
 Falls back to a more general primary language subtag, or, if the more general language isn't one we support, to English (en). Throws an error if i18n has not yet been configured.
 
 locale (Optional): If a locale is provided, returns the closest supported locale.
@@ -103,7 +102,7 @@ Determines if the provided locale is a right-to-left language.
 
 **handleRtl()**
 
-If the current locale is an RTL language, applies the RTL stylesheet and adds a "dir=rtl" attribute to the html tag.
+If the current locale is an RTL language, adds a "dir=rtl" attribute to the html tag.
 
 Passthrough components from `react-intl <https://github.com/formatjs/react-intl/wiki/Components>`_.
 
@@ -176,7 +175,7 @@ Provides a list of languages represented as objects of the following shape::
     name // The localized name of the language
   }
 
-The list should be sorted alphabetically in the current locale (but see `ARCH-878 <https://openedx.atlassian.net/browse/ARCH-878>`_). This is useful for populating a dropdown.
+This is useful for populating a dropdown. The list should be sorted alphabetically in the current locale, but we had to skip that for performance reasons. See `ARCH-878 <https://openedx.atlassian.net/browse/ARCH-878>`_.
 
 
 .. |Build Status| image:: https://api.travis-ci.org/edx/frontend-i18n.svg?branch=master

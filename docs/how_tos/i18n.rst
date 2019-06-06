@@ -116,16 +116,16 @@ The pipeline jobs live in the ``ecommerce-scripts`` repo, but you don't have to 
             "i18n": {
               "plugins": [
                 ["react-intl", {
-                  "messagesDir": "./babel-plugin-react-intl-temp",
+                  "messagesDir": "./temp/babel-plugin-react-intl",
                   "moduleSourceName": "@edx/frontend-i18n"
                  }]
                ]
              }
            }
 
-      * Confirm that running ``make i18n.extract`` creates a lot of ``.json`` files in ``your-repo/babel-plugin-react-intl-temp/`` .
+      * Confirm that running ``make i18n.extract`` creates a lot of ``.json`` files in ``your-repo/temp/babel-plugin-react-intl/`` .
 
-      * Add ``babel-plugin-react-intl-temp`` and ``src/i18n/transifex_input.json`` to your ``.gitignore``.
+      * Add ``temp/babel-plugin-react-intl`` and ``src/i18n/transifex_input.json`` to your ``.gitignore``.
 
    #. Concatenation: All those ``.json`` files need to become one file.
 
@@ -143,7 +143,7 @@ The pipeline jobs live in the ``ecommerce-scripts`` repo, but you don't have to 
 
       * You can't test this one without Transifex credentials, so at this point it's probably easiest to just make your pipeline job and run that.
 
-#. The job to pull translations out of Transifex and commit them to your repo will call ``make pull_translations``. You'll need to specify which languages you want to pull in the ``langs`` variable of your Makefile, and the user ``edx_transifex_bot`` will need to have permissions to merge an unreviewed pull request into your repo. This means your repo must either allow merging unreviewed pull requests for everyone, or ``edx_transifex_bot`` needs to be an administrator.
+#. The job to pull translations out of Transifex and commit them to your repo will call ``make pull_translations``. You'll need to specify which languages you want to pull in the ``transifex_langs`` variable of your Makefile, and the user ``edx_transifex_bot`` will need to have permissions to merge an unreviewed pull request into your repo. This means your repo must either allow merging unreviewed pull requests for everyone, or ``edx_transifex_bot`` needs to be an administrator.
 
 *******************************************
 Create empty translation files in your repo
