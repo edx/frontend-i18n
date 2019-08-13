@@ -60,6 +60,7 @@ let config = {
   ENVIRONMENT: null,
   LANGUAGE_PREFERENCE_COOKIE_NAME: null,
 };
+let debug = false;
 
 export function getCookies() {
   return cookies;
@@ -107,13 +108,23 @@ export const getPrimaryLanguageSubtag = code => code.split('-')[0];
  */
 export const findSupportedLocale = (locale) => {
   if (messages[locale] !== undefined) {
+    if (debug) {
+      global.console.log('frontend-i18n: Exact locale match for %s', locale);
+    }
     return locale;
   }
 
-  if (messages[getPrimaryLanguageSubtag(locale)] !== undefined) {
-    return getPrimaryLanguageSubtag(locale);
+  const subtag = getPrimaryLanguageSubtag(locale);
+  if (messages[subtag] !== undefined) {
+    if (debug) {
+      global.console.log('frontend-i18n: Using subtag %s from %s', subtag, locale);
+    }
+    return subtag;
   }
 
+  if (debug) {
+    global.console.log('frontend-i18n: No locale found for %s', locale);
+  }
   return 'en';
 };
 
@@ -136,13 +147,20 @@ export const getLocale = (locale) => {
   // 2. User setting in cookie
   const cookieLangPref = cookies.get(config.LANGUAGE_PREFERENCE_COOKIE_NAME);
   if (cookieLangPref) {
+    if (debug) {
+      global.console.log('frontend-i18n: Found language cookie with locale %s', cookieLangPref);
+    }
     return findSupportedLocale(cookieLangPref.toLowerCase());
   }
   // 3. Browser language (default)
-  // Note that some browers prefer upper case for the region part of the locale, while others don't.
-  // Thus the toLowerCase, for consistency.
+  // Note that some browsers prefer upper case for the region part of the locale, while others
+  // don't.  Thus the toLowerCase, for consistency.
   // https://developer.mozilla.org/en-US/docs/Web/API/NavigatorLanguage/language
-  return findSupportedLocale(global.navigator.language.toLowerCase());
+  const browserPref = global.navigator.language;
+  if (debug) {
+    global.console.log('frontend-i18n: No language cookie, using browser locale %s', browserPref);
+  }
+  return findSupportedLocale(browserPref.toLowerCase());
 };
 
 /**
@@ -189,10 +207,11 @@ export const handleRtl = () => {
  * Logs a warning if it detects a locale it doesn't expect (as defined by the supportedLocales list
  * above), or if an expected locale is not provided.
  */
-export const configure = (newConfig, msgs) => {
+export const configure = (newConfig, msgs, printDebugMsgs) => {
   validateConfiguration(newConfig);
   messages = msgs;
   config = newConfig;
+  debug = printDebugMsgs;
 
   if (config.ENVIRONMENT !== 'production') {
     Object.keys(messages).forEach((key) => {

@@ -103,7 +103,11 @@ describe('lib', () => {
   });
 
   describe('getLocale', () => {
+    let logSpy = null;
+
     beforeEach(() => {
+      logSpy = spyOn(console, 'log');
+
       configure(
         {
           ENVIRONMENT: 'production',
@@ -120,14 +124,17 @@ describe('lib', () => {
     it('should return a supported locale as supplied', () => {
       expect(getLocale('es-419')).toEqual('es-419');
       expect(getLocale('en-us')).toEqual('en-us');
+      expect(logSpy).not.toHaveBeenCalled();
     });
 
     it('should return the supported primary language tag of a not-quite-supported locale', () => {
       expect(getLocale('de-de')).toEqual('de');
+      expect(logSpy).not.toHaveBeenCalled();
     });
 
     it('should return en if the locale is not supported at all', () => {
       expect(getLocale('oh-no')).toEqual('en');
+      expect(logSpy).not.toHaveBeenCalled();
     });
 
     it('should look up a locale in the language preference cookie if one was not supplied', () => {
@@ -139,10 +146,13 @@ describe('lib', () => {
 
       getCookies().get = jest.fn(() => 'de-bah');
       expect(getLocale()).toEqual('de');
+      expect(logSpy).not.toHaveBeenCalled();
     });
+
     it('should fallback to the browser locale if the cookie does not exist', () => {
       getCookies().get = jest.fn(() => null);
       expect(getLocale()).toEqual(global.navigator.language.toLowerCase());
+      expect(logSpy).not.toHaveBeenCalled();
     });
   });
 
