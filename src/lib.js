@@ -55,7 +55,7 @@ const rtlLocales = [
   'ur', // Urdu (not currently supported)
 ];
 
-let messages = null;
+let messages = {};
 let config = {
   ENVIRONMENT: null,
   LANGUAGE_PREFERENCE_COOKIE_NAME: null,
