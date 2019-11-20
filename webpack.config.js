@@ -25,14 +25,10 @@ module.exports = {
     react: {
       commonjs: 'react',
       commonjs2: 'react',
-      amd: 'React',
-      root: 'React',
     },
     '@edx/frontend-logging': {
       commonjs: '@edx/frontend-logging',
       commonjs2: '@edx/frontend-logging',
-      amd: '@edx/frontend-logging',
-      root: '@edx/frontend-logging',
     },
   },
   module: {
