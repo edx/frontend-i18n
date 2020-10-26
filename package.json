@@ -67,7 +67,7 @@
     "i18n-iso-countries": "4.0.0",
     "iso-countries-languages": "0.3.0",
     "react-intl": "2.9.0",
-    "universal-cookie": "4.0.0"
+    "universal-cookie": "4.0.4"
   },
   "peerDependencies": {
     "@edx/frontend-logging": "^3.0.1",
