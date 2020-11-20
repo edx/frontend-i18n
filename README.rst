@@ -1,5 +1,5 @@
 ⛔️ DEPRECATION WARNING 
-======================
+=======================
 
 **This library is deprecated and will be archived.** 
 
@@ -184,8 +184,8 @@ Provides a list of languages represented as objects of the following shape::
 This is useful for populating a dropdown. The list should be sorted alphabetically in the current locale, but we had to skip that for performance reasons. See `ARCH-878 <https://openedx.atlassian.net/browse/ARCH-878>`_.
 
 
-.. |Build Status| image:: https://api.travis-ci.org/edx/frontend-i18n.svg?branch=master
-   :target: https://travis-ci.org/edx/frontend-i18n
+.. |Build Status| image:: https://api.travis-ci.com/edx/frontend-i18n.svg?branch=master
+   :target: https://travis-ci.com/edx/frontend-i18n
 .. |Coveralls| image:: https://img.shields.io/coveralls/edx/frontend-i18n.svg?branch=master
    :target: https://coveralls.io/github/edx/frontend-i18n
 .. |npm_version| image:: https://img.shields.io/npm/v/@edx/frontend-i18n.svg
