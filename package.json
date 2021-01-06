@@ -62,7 +62,7 @@
     "webpack-cli": "3.3.6"
   },
   "dependencies": {
-    "@cospired/i18n-iso-languages": "2.0.2",
+    "@cospired/i18n-iso-languages": "2.2.0",
     "glob": "7.1.4",
     "i18n-iso-countries": "4.0.0",
     "iso-countries-languages": "0.3.0",
